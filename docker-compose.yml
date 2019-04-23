@@ -23,3 +23,5 @@ services:
       CONJUR_ACCOUNT:
       CONJUR_AUTHN_API_KEY:
       CONJUR_AUTHN_LOGIN: admin
+    volumes:
+    - ./policy:/policy
