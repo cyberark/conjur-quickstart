@@ -1,5 +1,5 @@
 - !policy
-  id: myApp
+  id: BotApp
   body:
     # Define a human user, a non-human identity that represents an application, and a secret
   - !user Dave
