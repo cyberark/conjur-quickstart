@@ -1,25 +1,64 @@
 version: '2'
 services:
+  openssl:
+    image: svagi/openssl:latest
+    container_name: openssl
+    entrypoint:
+     - openssl
+     - req
+     - -newkey
+     - rsa:2048
+     - -days
+     - "365"
+     - -nodes
+     - -x509
+     - -config
+     - tmp/conf/tls.conf
+     - -extensions
+     - v3_ca
+     - -keyout
+     - tmp/conf/nginx.key
+     - -out
+     - tmp/conf/nginx.crt
+    volumes:
+     - ./conf/tls/:/tmp/conf
+  
+  bot_app:
+    image: ellerbrock/alpine-bash-curl-ssl
+    container_name: bot_app
+    command: tail -F anything
+    volumes:
+    - ./program.sh:/tmp/program.sh
+     
   database:
     image: postgres:9.3
+    container_name: postgres_database
 
   conjur:
     image: cyberark/conjur
+    container_name: conjur_server
     command: server
     environment:
       DATABASE_URL: postgres://postgres@database/postgres
       CONJUR_DATA_KEY:
     depends_on: [ database ]
+
+  proxy:
+    image: nginx:1.13.6-alpine
+    container_name: nginx_proxy
     ports:
-      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./conf/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./conf/tls/nginx.key:/etc/nginx/nginx.key:ro
+      - ./conf/tls/nginx.crt:/etc/nginx/nginx.crt:ro
+    depends_on: [ conjur ]
 
   client:
-    image: conjurinc/cli5
-    depends_on: [ conjur ]
+    image: cyberark/conjur-cli:5
+    container_name: conjur_client
+    depends_on: [ proxy ]
     entrypoint: sleep
     command: infinity
-    environment:
-      CONJUR_APPLIANCE_URL: http://conjur
-      CONJUR_ACCOUNT:
-      CONJUR_AUTHN_API_KEY:
-      CONJUR_AUTHN_LOGIN: admin
+    volumes:
+    - ./conf/policy:/policy
