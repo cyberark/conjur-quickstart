@@ -24,7 +24,7 @@ services:
      - ./conf/tls/:/tmp/conf
   
   bot_app:
-    image: ellerbrock/alpine-bash-curl-ssl
+    image: cfmanteiga/alpine-bash-curl-jq
     container_name: bot_app
     command: tail -F anything
     volumes:
