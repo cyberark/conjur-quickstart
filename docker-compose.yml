@@ -25,6 +25,7 @@ services:
   
   bot_app:
     image: cfmanteiga/alpine-bash-curl-jq
+    privileged: true
     container_name: bot_app
     command: tail -F anything
     volumes:
