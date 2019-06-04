@@ -22,14 +22,6 @@ services:
      - tmp/conf/nginx.crt
     volumes:
      - ./conf/tls/:/tmp/conf
-  
-  bot_app:
-    image: cfmanteiga/alpine-bash-curl-jq
-    privileged: true
-    container_name: bot_app
-    command: tail -F anything
-    volumes:
-    - ./program.sh:/tmp/program.sh
      
   database:
     image: postgres:9.3
@@ -53,13 +45,5 @@ services:
       - ./conf/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./conf/tls/nginx.key:/etc/nginx/nginx.key:ro
       - ./conf/tls/nginx.crt:/etc/nginx/nginx.crt:ro
-    depends_on: [ conjur ]
-
-  client:
-    image: cyberark/conjur-cli:5
-    container_name: conjur_client
-    depends_on: [ proxy ]
-    entrypoint: sleep
-    command: infinity
-    volumes:
-    - ./conf/policy:/policy
+    depends_on: [ openssl, conjur ]
+    
