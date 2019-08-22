@@ -32,7 +32,7 @@ services:
     - ./program.sh:/tmp/program.sh
      
   database:
-    image: postgres:9.3
+    image: postgres:9.4
     container_name: postgres_database
 
   conjur:
