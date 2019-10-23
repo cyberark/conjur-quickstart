@@ -1,0 +1,25 @@
+version: '2'
+services:
+  openssl:
+    image: svagi/openssl:latest
+    container_name: openssl
+    entrypoint:
+     - openssl
+     - req
+     - -newkey
+     - rsa:2048
+     - -days
+     - "365"
+     - -nodes
+     - -x509
+     - -config
+     - tmp/conf/tls.conf
+     - -extensions
+     - v3_ca
+     - -keyout
+     - tmp/conf/certificate/nginx.key
+     - -out
+     - tmp/conf/certificate/nginx.crt
+    volumes:
+     - ./conf/tls.conf:/tmp/conf/tls.conf
+     - ./conf/certificate/:/tmp/conf/certificate
