@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   openssl:
     image: svagi/openssl:latest
@@ -30,6 +30,7 @@ services:
     command: tail -F anything
     volumes:
     - ./program.sh:/tmp/program.sh
+    restart: on-failure
      
   database:
     image: postgres:9.4
@@ -42,7 +43,9 @@ services:
     environment:
       DATABASE_URL: postgres://postgres@database/postgres
       CONJUR_DATA_KEY:
-    depends_on: [ database ]
+    depends_on:
+    - database
+    restart: on-failure
 
   proxy:
     image: nginx:1.13.6-alpine
@@ -55,6 +58,7 @@ services:
     depends_on:
     - conjur
     - openssl
+    restart: on-failure
 
   client:
     image: cyberark/conjur-cli:5
