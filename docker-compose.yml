@@ -37,7 +37,7 @@ services:
     container_name: postgres_database
 
   conjur:
-    image: cyberark/conjur
+    build: .
     container_name: conjur_server
     command: server
     environment:

@@ -1,0 +1,1 @@
+FROM conjur:{{ CONJUR_IMAGE_VERSION }}
