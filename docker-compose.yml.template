@@ -1,0 +1,70 @@
+version: '3'
+services:
+  openssl:
+    image: svagi/openssl:latest
+    container_name: openssl
+    entrypoint:
+     - openssl
+     - req
+     - -newkey
+     - rsa:2048
+     - -days
+     - "365"
+     - -nodes
+     - -x509
+     - -config
+     - tmp/conf/tls.conf
+     - -extensions
+     - v3_ca
+     - -keyout
+     - tmp/conf/nginx.key
+     - -out
+     - tmp/conf/nginx.crt
+    volumes:
+     - ./conf/tls/:/tmp/conf
+  
+  bot_app:
+    image: cfmanteiga/alpine-bash-curl-jq
+    privileged: true
+    container_name: bot_app
+    command: tail -F anything
+    volumes:
+    - ./program.sh:/tmp/program.sh
+    restart: on-failure
+     
+  database:
+    image: postgres:9.4
+    container_name: postgres_database
+
+  conjur:
+    build: .
+    container_name: conjur_server
+    command: server
+    environment:
+      DATABASE_URL: postgres://postgres@database/postgres
+      CONJUR_DATA_KEY: {{ CONJUR_DATA_KEY }}
+    depends_on:
+    - database
+    restart: on-failure
+
+  proxy:
+    image: nginx:1.13.6-alpine
+    container_name: nginx_proxy
+    ports:
+      - "8443:443"
+    volumes:
+      - ./conf/:/etc/nginx/conf.d/:ro
+      - ./conf/tls/:/etc/nginx/tls/:ro
+    depends_on:
+    - conjur
+    - openssl
+    restart: on-failure
+
+  client:
+    image: cyberark/conjur-cli:5
+    container_name: conjur_client
+    depends_on: [ proxy ]
+    entrypoint: sleep
+    command: infinity
+    volumes:
+    - ./conf/policy:/policy
