@@ -35,6 +35,8 @@ services:
   database:
     image: postgres:9.4
     container_name: postgres_database
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
 
   conjur:
     image: cyberark/conjur
