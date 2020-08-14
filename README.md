@@ -12,6 +12,12 @@ using Docker Compose.
     + [Define policy](#define-policy)
     + [Store a secret](#store-a-secret)
     + [Run the demo app](#run-the-demo-app)
+  * [Using persistent Conjur configuration](#using-persistent-conjur-configuration)
+    + [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
+    + [Restarting the Conjur OSS environment using persistence](#restarting-the-conjur-oss-environment-using-persistence)
+    + [Delete the Conjur data directory when done](#delete-the-conjur-data-directory-when-done)
+  * [Troubleshooting](#troubleshooting)
+    + [`Failed to open TCP connection` error for Conjur login](#failed-to-open-tcp-connection-error-for-conjur-login)
   * [Next steps](#next-steps)
 - [Contributing](#contributing)
 
@@ -308,12 +314,178 @@ securely.
 
 **Congratulations! You are ready to secure your own apps with Conjur.**
 
+### Using persistent Conjur configuration
+
+With small variations to the steps outlined above, it is possible to set
+up a Conjur OSS environment that retains Conjur configuration or state
+across Docker container restarts. Using the steps outlined below, a
+Conjur OSS environment can be set up that uses a local directory on
+the host to persist Conjur configuration across container restarts.
+
+#### Set up a Conjur OSS environment with persistence
+
+1. If you are already running the Conjur OSS quickstart environment without
+   persistence, bring down the associated containers:
+
+   ```
+   docker-compose down
+   ```
+
+1. Create a directory for storing persistent state. For example:
+
+   ```
+   mkdir temp-db-data
+   ```
+
+   _**NOTE: The permissions on this directory will automatically be changed
+   to 700 by docker-compose when the directory gets host-mounted by the
+   Conjur container.**_
+
+1. Modify `docker-compose.yml` in this repository to support persistent
+   storage of Conjur state. Add the following line to the bottom of the
+   `database` service configuration, replacing `<PATH-TO-CONJUR-DATA-DIRECTORY>`
+   with the path to the directory created in the previous step:
+
+   ```
+       volumes:
+         - <PATH-TO-CONJUR-DATA-DIRECTORY>:/var/lib/postgresql/data
+   ```
+
+   For example:
+
+   ```
+       volumes:
+         - /home/myusername/conjur-quickstart/temp-db-data:/var/lib/postgresql/data
+   ```
+
+1. Start the Conjur OSS environment using persistence:
+
+   - If you had previously been running the Conjur OSS environment,
+     follow the steps outlined above starting with Step 4 of the
+     [Set up a Conjur OSS environment](#set-up-a-conjur-oss-environment)
+     section above.
+   - Otherwise, follow the steps starting with Step 1 of the
+     [Set up a Conjur OSS environment](#set-up-a-conjur-oss-environment)
+     section above.
+
+#### Restarting the Conjur OSS environment using persistence
+
+Once you have set up the Conjur OSS environment to support persistent Conjur
+state, you can restart your environment as follows:
+
+1. Bring the containers down:
+
+   ```
+   docker-compose down
+   ```
+
+   _**NOTE: You must use the `docker-compose down` command here rather than
+   the `docker-compose stop` in order to avoid having stale, ephemeral
+   connection state in the Conjur container. If you use the `docker-compose
+   stop` command here instead, you may see errors as described in the
+   [`Failed to open TCP connection` error for Conjur login](#failed-to-open-tcp-connection-error-for-conjur-login)
+   section below.**_
+
+1. Bring the containers back up:
+
+   ```
+   docker-compose up -d
+   ```
+
+1. Reconnect the Conjur client to the Conjur server. Use the account name
+   that you created in the
+   [Create an admin account](#create-an-admin-account) section above. For
+   example:
+
+   ```
+   docker-compose exec client conjur init -u conjur -a myConjurAccount
+   ```
+
+1. Log in again to Conjur as admin. When prompted for a password, insert the
+   API key stored in the `admin_data` file:
+
+   ```
+   docker-compose exec client conjur authn login -u admin
+   ```
+
+   **Verification**
+   When you successfully log in, the terminal returns:
+   ```
+   Logged in
+   ```
+
+#### Delete the Conjur data directory when done
+
+For added security, remember to delete the data directory that you created
+in Step 1 of the
+[Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
+section above.
+
 ### Next steps
 
 Now that you've got a local Conjur instance running, what can you do with it?
 
 Try some of our [tutorials](https://www.conjur.org/get-started/tutorials/) on
 Conjur.org.
+
+## Troubleshooting
+
+### `Failed to open TCP connection` error for Conjur login
+
+If you are
+[using persistent Conjur configuration](#using-persistent-conjur-configuration),
+and you see the following error when trying to log into Conjur:
+
+```
+error: Failed to open TCP connection to conjur:80 (Connection refused - connect(2) for "conjur" port 80)
+```
+
+Then try the following:
+
+1. Run the following command:
+
+   ```
+   docker-compose logs conjur | grep "already running"
+   ```
+
+1. If the command in Step 1 produces the following line:
+
+   ```
+   A server is already running. Check /opt/conjur-server/tmp/pids/server.pid.
+   ```
+
+   then it may be that the Conjur container was stopped (e.g.
+   `docker-compose stop conjur`) and restarted
+   (`docker-compose up -d conjur`)
+   without being brought fully down (e.g. with `docker-compose down conjur`),
+   leaving the container with stale connection state.
+
+   To recover from this, run:
+
+   ```
+   docker-compose down conjur
+   docker-compose up -d conjur
+   ```
+
+   And log in again, e.g.:
+
+   ```
+   docker-compose exec client conjur authn login -u admin
+   ```
+
+1. If "A server is already running" does not show in the Conjur container
+   logs, or Step 2 above is unsuccessful, then try restarting all containers:
+
+   ```
+   docker-compose down
+   docker-compose up -d
+   ```
+
+   and try logging in again, e.g.:
+
+   ```
+   docker-compose exec client conjur authn login -u admin
+   ```
 
 ## Contributing
 
