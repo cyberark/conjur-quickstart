@@ -201,7 +201,7 @@ user that represents your application, and a variable.
    docker-compose exec client conjur policy load root policy/BotApp.yml > my_app_data
    ```
 
-   Conjur generates the following API keys and stores them in a file, `my_app_data`:
+   Conjur generates the following API keys and stores them in a file, my_app_data:
    - An API key for Dave, the human user. This key is used to authenticate user
      Dave to Conjur.
    - An API key for BotApp, the non-human identity. This key is used to
