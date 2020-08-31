@@ -12,13 +12,13 @@ using Docker Compose.
     + [Define policy](#define-policy)
     + [Store a secret](#store-a-secret)
     + [Run the demo app](#run-the-demo-app)
+  * [Next steps](#next-steps)
   * [Using persistent Conjur configuration](#using-persistent-conjur-configuration)
     + [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
     + [Restarting the Conjur OSS environment using persistence](#restarting-the-conjur-oss-environment-using-persistence)
     + [Delete the Conjur data directory when done](#delete-the-conjur-data-directory-when-done)
   * [Troubleshooting](#troubleshooting)
     + [`Failed to open TCP connection` error for Conjur login](#failed-to-open-tcp-connection-error-for-conjur-login)
-  * [Next steps](#next-steps)
 - [Contributing](#contributing)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -314,6 +314,13 @@ securely.
 
 **Congratulations! You are ready to secure your own apps with Conjur.**
 
+### Next steps
+
+Now that you've got a local Conjur instance running, what can you do with it?
+
+Try some of our [tutorials](https://www.conjur.org/get-started/tutorials/) on
+Conjur.org.
+
 ### Using persistent Conjur configuration
 
 With small variations to the steps outlined above, it is possible to set
@@ -420,13 +427,6 @@ For added security, remember to delete the data directory that you created
 in Step 1 of the
 [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
 section above.
-
-### Next steps
-
-Now that you've got a local Conjur instance running, what can you do with it?
-
-Try some of our [tutorials](https://www.conjur.org/get-started/tutorials/) on
-Conjur.org.
 
 ## Troubleshooting
 
