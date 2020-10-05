@@ -428,6 +428,56 @@ in Step 1 of the
 [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
 section above.
 
+### Adding or Modifying Container Environment Variables
+
+This section describes the process of either adding or modifying environment variables for
+a `docker-compose` service. The process recreates a service with the desired changes, while
+the rest of the system continues running. Note that for a stateful service, there should be a
+[persistence mechanism](#using-persistent-conjur-configuration) in place (e.g. volume mounts),
+otherwise data will be lost when the container is recreated.
+
+The example below will add an environment variable `CONJUR_LOG_LEVEL=debug` to the `conjur`
+service container.
+
+1. Add or modify environment variables in `docker-compose.yml`
+
+   `docker-compose.yml` is used to define the Conjur OSS system. Additions and modifications to
+   environment variables are made in the `environment` configuration of the desired service,
+   and are of the form:
+
+   ```
+   version: '3'
+   services:
+     ...
+     conjur:
+       ...
+       environment:
+         CONJUR_LOG_LEVEL: debug
+   ```
+
+1. Recreate the container
+
+   ```
+   docker-compose up -d --no-deps conjur
+   ```
+
+   The new container now contains the updated configuration defined in `docker-compose.yml`.
+
+1. Verify that the desired environment variables are now defined in the container
+
+   Run the following:
+
+   ```
+   docker-compose exec conjur printenv CONJUR_LOG_LEVEL
+   ```
+
+   If the environment variable was correctly assigned in the container, the terminal returns
+   the value of the variable:
+
+   ```
+   debug
+   ```
+
 ## Troubleshooting
 
 ### `Failed to open TCP connection` error for Conjur login
