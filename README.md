@@ -17,6 +17,7 @@ using Docker Compose.
     + [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
     + [Restarting the Conjur OSS environment using persistence](#restarting-the-conjur-oss-environment-using-persistence)
     + [Delete the Conjur data directory when done](#delete-the-conjur-data-directory-when-done)
+  * [Adding or Modifying Container Environment Variables](#adding-or-modifying-container-environment-variables)
   * [Troubleshooting](#troubleshooting)
     + [`Failed to open TCP connection` error for Conjur login](#failed-to-open-tcp-connection-error-for-conjur-login)
 - [Contributing](#contributing)
