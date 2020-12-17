@@ -1,8 +1,20 @@
-name: daily_flow_test
+name: quick_start_flow_test
 on:
+  # Run once daily at 12 AM UTC, 8 PM EST
   schedule:
-    # run once daily at 12 AM UTC, 8 PM EST
     - cron: '0 0 * * *'
+
+  # Run this on pushes to master
+  push:
+    branches:
+    - master
+
+  # Or when PR operations are done
+  pull_request:
+    types:
+    - opened
+    - reopened
+    - synchronize
 
 jobs:
   # runs through all the tasks listed in conjur-quickstart daily
