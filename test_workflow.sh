@@ -64,7 +64,7 @@ docker-compose exec -T conjur conjurctl account create myConjurAccount > admin_d
 echo
 
 echo "Step 6: Connect the Conjur client to the Conjur server"
-docker container exec conjur_client conjur init -u conjur -a myConjurAccount
+docker container exec conjur_client bash -c "yes 'yes' | conjur init -u https://proxy -a myConjurAccount"
 echo
 
 announce "UNIT 2. Define Policy"

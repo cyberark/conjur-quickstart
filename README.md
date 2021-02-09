@@ -153,13 +153,15 @@ admin user.
 1. Connect the Conjur client to the Conjur server
 
    This is a one-time action. For the duration of the container’s life or until
-   additional initcommand is issued, the Conjur client and the Conjur server
+   additional `init` command is issued, the Conjur client and the Conjur server
    remain connected.
 
    Use the account name that you created in step 5:
    ```
-   docker-compose exec client conjur init -u conjur -a myConjurAccount
+   docker-compose exec client conjur init -u https://proxy -a myConjurAccount
    ```
+   
+   **Note:** Make sure you anser `yes` when you are prompted to trust the certificate.
 
    **Verification**
    The terminal returns the following output:
