@@ -1,7 +1,7 @@
 version: '3'
 services:
   openssl:
-    image: svagi/openssl:latest
+    image: cyberark/conjur
     container_name: openssl
     entrypoint:
      - openssl
@@ -13,13 +13,13 @@ services:
      - -nodes
      - -x509
      - -config
-     - tmp/conf/tls.conf
+     - /tmp/conf/tls.conf
      - -extensions
      - v3_ca
      - -keyout
-     - tmp/conf/nginx.key
+     - /tmp/conf/nginx.key
      - -out
-     - tmp/conf/nginx.crt
+     - /tmp/conf/nginx.crt
     volumes:
      - ./conf/tls/:/tmp/conf
   
