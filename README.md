@@ -13,6 +13,7 @@ using Docker Compose.
     + [Store a secret](#store-a-secret)
     + [Run the demo app](#run-the-demo-app)
   * [Next steps](#next-steps)
+  * [Configuring Conjur with predefined admin password](#configuring-conjur-with-predefined-admin-password)
   * [Using persistent Conjur configuration](#using-persistent-conjur-configuration)
     + [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
     + [Restarting the Conjur OSS environment using persistence](#restarting-the-conjur-oss-environment-using-persistence)
@@ -321,6 +322,22 @@ Now that you've got a local Conjur instance running, what can you do with it?
 
 Try some of our [tutorials](https://www.conjur.org/get-started/tutorials/) on
 Conjur.org.
+
+### Configuring Conjur with predefined admin password
+
+The following command will allow you to specify the admin user's password:
+```
+docker-compose exec conjur bash -c 'echo -n "MySecretP@SS1" | conjurctl account create --password-from-stdin --name  myConjurAccount'
+```
+The password must be provided via STDIN in any manner you prefer and must meet
+the following complexity rules:
+- Between 12 and 128 characters
+- 2 uppercase letters
+- 2 lowercase letters
+- 1 special character
+- 1 digit
+
+*Note: This feature is available in Conjur v1.11.5+*
 
 ### Using persistent Conjur configuration
 
