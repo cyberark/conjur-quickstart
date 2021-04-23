@@ -22,7 +22,7 @@ services:
      - /tmp/conf/nginx.crt
     volumes:
      - ./conf/tls/:/tmp/conf
-  
+
   bot_app:
     image: cfmanteiga/alpine-bash-curl-jq
     privileged: true
@@ -31,12 +31,23 @@ services:
     volumes:
     - ./program.sh:/tmp/program.sh
     restart: on-failure
-     
+
   database:
     image: postgres:10.15
     container_name: postgres_database
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 8432:5432
+
+  pgadmin:
+#    https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+    ports:
+      - 8081:80
 
   conjur:
     image: cyberark/conjur
@@ -49,6 +60,8 @@ services:
     depends_on:
     - database
     restart: on-failure
+    ports:
+      - 8080:80
 
   proxy:
     image: nginx:1.13.6-alpine
