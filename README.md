@@ -13,6 +13,7 @@ using Docker Compose.
     + [Store a secret](#store-a-secret)
     + [Run the demo app](#run-the-demo-app)
   * [Next steps](#next-steps)
+  * [Explore the Conjur database](#explore-the-conjur-database)
   * [Configuring Conjur with predefined admin password](#configuring-conjur-with-predefined-admin-password)
   * [Using persistent Conjur configuration](#using-persistent-conjur-configuration)
     + [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
@@ -322,6 +323,31 @@ Now that you've got a local Conjur instance running, what can you do with it?
 
 Try some of our [tutorials](https://www.conjur.org/get-started/tutorials/) on
 Conjur.org.
+
+### Explore the Conjur database
+
+This section is about exploring the database. The admin panel from pgAdmin can be used to
+discover and explore the database schema, stored procedures and triggers that constitute a
+significant part of the inner working of Conjur. It offers a glimpse into the data model
+of Conjur.
+
+This section should follow only after completion of the [Store a secret](#store-a-secret)
+section. There's more insight to be gleamed from the database when it has become reasonably populated
+with some representative data i.e. roles, identities, permissions etc.
+
+As part of [Setting up a Conjur OSS environment](#set-up-a-conjur-oss-environment) the `pgadmin`
+service is spun up. It will be accessible on your local machine at `http://localhost:8081`.
+
+To explore the database
+1. Visit `http://localhost:8081`
+2. Login with email "user@domain.com" and password "SuperSecret"
+3. Add a new server. Name it "Conjur DB". Set the connection details. Host is "database", Port is "5432", Database is "postgres", Username is "postgres", and there is no password. Note that `pgamdin` is running inside the `docker-compose` network, it is for this reason that the Host of "database" is resolvable.
+4. Dig in as shown below!
+
+![image](https://user-images.githubusercontent.com/8653164/115864622-03da7a00-a42f-11eb-974f-dc2cb034ca09.png)
+
+Go to http://localhost and use pgadmin
+Add new server, name it what you like, then set the connection details. host=databasse, port=5432, database=postgres, username=postgres
 
 ### Configuring Conjur with predefined admin password
 
