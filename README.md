@@ -346,9 +346,6 @@ To explore the database
 
 ![image](https://user-images.githubusercontent.com/8653164/115864622-03da7a00-a42f-11eb-974f-dc2cb034ca09.png)
 
-Go to http://localhost and use pgadmin
-Add new server, name it what you like, then set the connection details. host=databasse, port=5432, database=postgres, username=postgres
-
 ### Configuring Conjur with predefined admin password
 
 The following command will allow you to specify the admin user's password:
