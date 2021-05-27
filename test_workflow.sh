@@ -44,11 +44,11 @@ echo "Step 1: Pull the Docker image"
 docker-compose pull
 echo
 
-echo "Step 2: Generate the master key"
+echo "Step 2: Generate the data key"
 docker-compose run --no-deps --rm conjur data-key generate > data_key
 echo
 
-echo "Step 3: Load master key as environment variable"
+echo "Step 3: Load data key as environment variable"
 export CONJUR_DATA_KEY="$(< data_key)"
 echo
 
