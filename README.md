@@ -6,9 +6,9 @@ using Docker Compose.
 - [Certification level](#certification-level)
 - [Requirements](#requirements)
 - [Usage instructions](#usage-instructions)
-  * [Using this quick start with Conjur OSS](#using-this-quick-start-with-conjur-oss)
+  * [Using this quick start with Conjur Open Source](#using-this-quick-start-with-conjur-open-source)
   * [Step by step guide](#step-by-step-guide)
-    + [Set up a Conjur OSS environment](#set-up-a-conjur-oss-environment)
+    + [Set up a Conjur Open Source environment](#set-up-a-conjur-open-source-environment)
     + [Define policy](#define-policy)
     + [Store a secret](#store-a-secret)
     + [Run the demo app](#run-the-demo-app)
@@ -16,8 +16,8 @@ using Docker Compose.
   * [Explore the Conjur database](#explore-the-conjur-database)
   * [Configuring Conjur with predefined admin password](#configuring-conjur-with-predefined-admin-password)
   * [Using persistent Conjur configuration](#using-persistent-conjur-configuration)
-    + [Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
-    + [Restarting the Conjur OSS environment using persistence](#restarting-the-conjur-oss-environment-using-persistence)
+    + [Set up a Conjur Open Source environment with persistence](#set-up-a-conjur-open-source-environment-with-persistence)
+    + [Restarting the Conjur Open Source environment using persistence](#restarting-the-conjur-open-source-environment-using-persistence)
     + [Delete the Conjur data directory when done](#delete-the-conjur-data-directory-when-done)
   * [Adding or Modifying Container Environment Variables](#adding-or-modifying-container-environment-variables)
   * [Troubleshooting](#troubleshooting)
@@ -47,7 +47,7 @@ git clone https://github.com/cyberark/conjur-quickstart.git
 
 ## Usage instructions
 
-### Using this quick start with Conjur OSS
+### Using this quick start with Conjur Open Source
 
 We **strongly** recommend choosing the version of this project to use from the
 latest [Conjur OSS suite release](https://docs.conjur.org/Latest/en/Content/Overview/Conjur-OSS-Suite-Overview.html).
@@ -63,12 +63,12 @@ In the sections below, we'll walk through standing this environment up step by
 step. Alternatively, you can follow the instructions by visiting the web
 tutorial: https://www.conjur.org/get-started/quick-start/oss-environment/.
 
-#### Set up a Conjur OSS environment
+#### Set up a Conjur Open Source environment
 
 In this unit you will learn how to install Conjur OpenSource using Docker.
 
 At the end of this section:
-You will have a working Conjur OSS environment with a Conjur account and an
+You will have a working Conjur Open Source environment with a Conjur account and an
 admin user.
 
 1. Pull the Docker images
@@ -117,14 +117,14 @@ admin user.
    export CONJUR_DATA_KEY="$(< data_key)"
    ```
 
-1. Start the Conjur OSS environment
+1. Start the Conjur Open Source environment
 
-   Start the Conjur OSS environment:
+   Start the Conjur Open Source environment:
    ```
    docker-compose up -d
    ```
 
-   When Conjur OSS starts, the terminal returns the following:
+   When Conjur Open Source starts, the terminal returns the following:
    ```
    Creating postgres_database ... done
    Creating bot_app ... done
@@ -335,7 +335,7 @@ This section should follow only after completion of the [Store a secret](#store-
 section. There's more insight to be gleamed from the database when it has become reasonably populated
 with some representative data i.e. roles, identities, permissions etc.
 
-As part of [Setting up a Conjur OSS environment](#set-up-a-conjur-oss-environment) the `pgadmin`
+As part of [Setting up a Conjur Open Source environment](#set-up-a-conjur-open-source-environment) the `pgadmin`
 service is spun up. It will be accessible on your local machine at `http://localhost:8081`.
 
 To explore the database
@@ -365,14 +365,14 @@ the following complexity rules:
 ### Using persistent Conjur configuration
 
 With small variations to the steps outlined above, it is possible to set
-up a Conjur OSS environment that retains Conjur configuration or state
+up a Conjur Open Source environment that retains Conjur configuration or state
 across Docker container restarts. Using the steps outlined below, a
-Conjur OSS environment can be set up that uses a local directory on
+Conjur Open Source environment can be set up that uses a local directory on
 the host to persist Conjur configuration across container restarts.
 
-#### Set up a Conjur OSS environment with persistence
+#### Set up a Conjur Open Source environment with persistence
 
-1. If you are already running the Conjur OSS quickstart environment without
+1. If you are already running the Conjur Open Source quickstart environment without
    persistence, bring down the associated containers:
 
    ```
@@ -406,19 +406,19 @@ the host to persist Conjur configuration across container restarts.
          - /home/myusername/conjur-quickstart/temp-db-data:/var/lib/postgresql/data
    ```
 
-1. Start the Conjur OSS environment using persistence:
+1. Start the Conjur Open Source environment using persistence:
 
-   - If you had previously been running the Conjur OSS environment,
+   - If you had previously been running the Conjur Open Source environment,
      follow the steps outlined above starting with Step 4 of the
-     [Set up a Conjur OSS environment](#set-up-a-conjur-oss-environment)
+     [Set up a Conjur Open Source environment](#set-up-a-conjur-open-source-environment)
      section above.
    - Otherwise, follow the steps starting with Step 1 of the
-     [Set up a Conjur OSS environment](#set-up-a-conjur-oss-environment)
+     [Set up a Conjur Open Source environment](#set-up-a-conjur-open-source-environment)
      section above.
 
-#### Restarting the Conjur OSS environment using persistence
+#### Restarting the Conjur Open Source environment using persistence
 
-Once you have set up the Conjur OSS environment to support persistent Conjur
+Once you have set up the Conjur Open Source environment to support persistent Conjur
 state, you can restart your environment as follows:
 
 1. Bring the containers down:
@@ -466,7 +466,7 @@ state, you can restart your environment as follows:
 
 For added security, remember to delete the data directory that you created
 in Step 1 of the
-[Set up a Conjur OSS environment with persistence](#set-up-a-conjur-oss-environment-with-persistence)
+[Set up a Conjur Open Source environment with persistence](#set-up-a-conjur-open-source-environment-with-persistence)
 section above.
 
 ### Adding or Modifying Container Environment Variables
@@ -482,7 +482,7 @@ service container.
 
 1. Add or modify environment variables in `docker-compose.yml`
 
-   `docker-compose.yml` is used to define the Conjur OSS system. Additions and modifications to
+   `docker-compose.yml` is used to define the Conjur Open Source system. Additions and modifications to
    environment variables are made in the `environment` configuration of the desired service,
    and are of the form:
 
