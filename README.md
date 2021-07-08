@@ -67,6 +67,13 @@ tutorial: https://www.conjur.org/get-started/quick-start/oss-environment/.
 
 In this unit you will learn how to install Conjur OpenSource using Docker.
 
+For the initial set up of the environment, we will be executing our commands
+in the Docker containers using `docker-compose exec <CONTAINER NAME> <COMMANDS>`.
+This enables us to execute commands in multiple containers without leaving our
+local session. At any point during the tutorial, you may choose to open a shell
+on the container to run the commands directly. See
+[Step 1 of "Run the demo app"](#run-the-demo-app) for an example.
+
 At the end of this section:
 You will have a working Conjur Open Source environment with a Conjur account and an
 admin user.
@@ -91,9 +98,9 @@ admin user.
    Pulling client ... done
    ```
 
-1. Generate the master key
+1. Generate the data key
 
-   The master data key will be used later to encrypt the database.
+   The data key will be used later to encrypt the database.
    In the working directory, generate the key and store it to a file:
 
    _* **Tip**: Although not mandatory, we prefer to store sensitive data to a
@@ -110,9 +117,9 @@ admin user.
    Creating network "conjur-quickstart_default" with the default driver
    ```
 
-1. Load master key as an environment variable
+1. Load data key as an environment variable
 
-   Load `data_key` file content (the master data key) as an environment variable:
+   Load `data_key` file content (the data key) as an environment variable:
    ```
    export CONJUR_DATA_KEY="$(< data_key)"
    ```
@@ -139,6 +146,10 @@ admin user.
    ```
    docker ps -a
    ```
+   This command will display all running containers on your machine, and you can use
+   this command at any time to make sure our containers for the tutorial are running.
+   
+   The rest of the tutorial uses `docker-compose`.
 
 1. Create an admin account
 
@@ -150,7 +161,7 @@ admin user.
    An account named myConjurAccount is created and the admin user is initialized,
    following keys are created and stored at admin_data file:
    - admin user API key. Later on, we will use this key to log in to Conjur.
-   - `myConjurAccount` Conjur account public key.
+   - `myConjurAccount` Conjur account name.
 
 1. Connect the Conjur client to the Conjur server
 
@@ -204,7 +215,7 @@ user that represents your application, and a variable.
    docker-compose exec client conjur policy load root policy/BotApp.yml > my_app_data
    ```
 
-   Conjur generates the following API keys and stores them in a file, my_app_data:
+   Conjur generates the following API keys and stores them in a file, `my_app_data`:
    - An API key for Dave, the human user. This key is used to authenticate user
      Dave to Conjur.
    - An API key for BotApp, the non-human identity. This key is used to
@@ -292,7 +303,7 @@ securely.
 
    Enter the BotApp container.
    ```
-   docker exec -it bot_app bash
+   docker-compose exec -T bot_app bash
    ```
 
 1. Generate a Conjur token
@@ -301,6 +312,9 @@ securely.
    ```
    curl -d "<BotApp API Key>" -k https://proxy/authn/myConjurAccount/host%2FBotApp%2FmyDemoApp/authenticate > /tmp/conjur_token
    ```
+   
+   **Make sure to replace `<BotApp Api Key>` in the command above
+     with the API key stored in `my_app_data`.**
 
    The Conjur token is stored in the conjur_token file.
 
@@ -313,7 +327,9 @@ securely.
 
    The secret is displayed.
 
-   TIP: If the secret is not displayed, try generating the token again.  You have eight minutes between generating the conjur token and fetching the secret with BotApp.
+   TIP: If the secret is not displayed, try generating the token again.
+   You have eight minutes between generating the conjur token and fetching
+   the secret with BotApp.
 
 **Congratulations! You are ready to secure your own apps with Conjur.**
 
