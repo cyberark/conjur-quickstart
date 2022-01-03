@@ -37,7 +37,7 @@ on our certification levels, see [our community guidelines](https://github.com/c
 ## Requirements
 
 To follow this quick start guide, you will need to install
-[Docker Toolbox](https://docs.docker.com/toolbox/overview/).
+[Docker Desktop](https://docs.docker.com/desktop/).
 
 You will also need to [clone this repository](https://docs.github.com/en/enterprise/2.13/user/articles/cloning-a-repository)
 to your working directory:
