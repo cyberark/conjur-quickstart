@@ -57,6 +57,7 @@ services:
       DATABASE_URL: postgres://postgres@database/postgres
       CONJUR_DATA_KEY:
       CONJUR_AUTHENTICATORS:
+      CONJUR_ACCOUNT:
     depends_on:
     - database
     restart: on-failure
