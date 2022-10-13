@@ -1,0 +1,37 @@
+version: '3'
+services:
+  pg-prometheus-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    environment: 
+      DATA_SOURCE_NAME: postgres://postgres@database/postgres?sslmode=disable
+      PG_EXPORTER_CONSTANT_LABELS: component=pg
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./files/prometheus:/etc/prometheus
+    ports:
+      - 9090:9090
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana
+    environment:
+      - GF_SERVER_HTTP_PORT=2345
+    ports:
+      - 2345:2345
+    volumes:
+      - ./files/grafana/storage:/var/lib/grafana
+      - ./files/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./files/grafana/provisioning:/etc/grafana/provisioning
+      - ./files/grafana/dashboards:/etc/grafana/dashboards
+
+  # Node exporter provides CPU and Memory metrics to Prometheus for the Docker
+  # host machine.
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+
+networks:
+  default:
+    name: conjur-quickstart_default
+    external: true

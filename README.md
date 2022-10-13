@@ -14,6 +14,7 @@ using Docker Compose.
     + [Run the demo app](#run-the-demo-app)
   * [Next steps](#next-steps)
   * [Explore the Conjur database](#explore-the-conjur-database)
+  * [Use Conjur with telemetry](#use-conjur-with-telemetry)
   * [Configuring Conjur with predefined admin password](#configuring-conjur-with-predefined-admin-password)
   * [Using persistent Conjur configuration](#using-persistent-conjur-configuration)
     + [Set up a Conjur Open Source environment with persistence](#set-up-a-conjur-open-source-environment-with-persistence)
@@ -356,6 +357,60 @@ To explore the database
 4. Dig in as shown below!
 
 ![image](https://user-images.githubusercontent.com/8653164/115864622-03da7a00-a42f-11eb-974f-dc2cb034ca09.png)
+
+### Use Conjur with telemetry
+
+Conjur supports telemetry as an opt-in feature. The telemetry feature has a general purpose mechanism for collection, but currently only supports a single method for export, a Prometheus scrape target endpoint. Below are instructions for enabling and exploring the telemetry feature.
+
+In order to enable telemetry in Conjur you must opt-in via configuration.
+You have a choice between setting an environment variable:
+
+```sh
+CONJUR_TELEMETRY_ENABLED=true
+```
+
+or updating a value in the `conjur.conf` configuration file:
+
+```yaml
+telemetry_enabled: true
+```
+
+Note that the environment variables takes precedence.
+
+1. If you are already running the Conjur Open Source quickstart environment without
+   telemetry, bring down the Conjur container:
+
+   ```
+   docker-compose down conjur
+   ```
+
+1. Modify `docker-compose.yml` in this repository to enable telemetry
+   by setting the `CONJUR_TELEMETRY_ENABLED` environment variable to the value `'true'` (It needs to be a string otherwise the docker-compose YAML parser will not be happy). Below is an illustration of the required change:
+
+   ```yaml
+   services:
+      # ...
+      conjur:
+         environment:
+            # ...
+            CONJUR_TELEMETRY_ENABLED: 'true'
+   ```
+
+1. Start the Conjur Open Source environment using telemetry:
+
+   - If you had previously been running the Conjur Open Source environment,
+     follow the steps 2 and 3 of the
+     [Set up a Conjur Open Source environment](#set-up-a-conjur-open-source-environment)
+     section above in order to recreate the Conjur container.
+   - Otherwise, follow the steps starting from Step 1 of the
+     [Set up a Conjur Open Source environment](#set-up-a-conjur-open-source-environment)
+     section above.
+
+1. Navigate to the [telemetry README](./telemetry/README.md#getting-started) and, starting from step 2, follow the instructions to set up the telemetry related services.
+
+   The telemetry README provides instructions for a comprehensive quickstart for setting up services such as Prometheus and Grafana,
+   creating relevant connections between those services and the Conjur Prometheus scrape target endpoint, and providing an example
+   dashboard with the metrics collected by Conjur.
 
 ### Configuring Conjur with predefined admin password
 
