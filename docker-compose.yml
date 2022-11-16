@@ -31,7 +31,20 @@ services:
     volumes:
     - ./program.sh:/tmp/program.sh
     restart: on-failure
-
+  cache:
+    image: redis:6.2-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    restart: always
+    environment:
+    - REDIS_HOSTS=local:cache:6379
+    ports:
+    - "8082:8081"
   database:
     image: postgres:10.16
     container_name: postgres_database
@@ -39,15 +52,19 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - 8432:5432
+    volumes:
+      - ./postgres.conf:/var/lib/postgresql/data/postgresql.conf
 
   pgadmin:
 #    https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
     image: dpage/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: user@domain.com
-      PGADMIN_DEFAULT_PASSWORD: SuperSecret
+      PGADMIN_DEFAULT_EMAIL: pgadmin@pgadmin.com #the username to login to pgadmin
+      PGADMIN_DEFAULT_PASSWORD: pgadmin
     ports:
       - 8081:80
+    volumes:
+      - ./pgadmin-servers.json:/var/lib/pgadmin/storage/pgadmin_pgadmin.com/servers.json
 
   conjur:
     image: cyberark/conjur
