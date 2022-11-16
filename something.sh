@@ -21,7 +21,7 @@ echo ""
 for i in {0..2}
 do
 
-    print_policy $i | docker-compose exec ...
+    print_policy $i | tee -a | docker-compose exec -T client conjur policy load root -
 done
 
 
