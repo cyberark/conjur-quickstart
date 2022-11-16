@@ -52,8 +52,8 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - 8432:5432
-    volumes:
-      - ./postgres.conf:/var/lib/postgresql/data/postgresql.conf
+    # volumes:
+      # - ./postgres.conf:/var/lib/postgresql/data/postgresql.conf
 
   pgadmin:
 #    https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
@@ -63,8 +63,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: pgadmin
     ports:
       - 8081:80
-    volumes:
-      - ./pgadmin-servers.json:/var/lib/pgadmin/storage/pgadmin_pgadmin.com/servers.json
+    # volumes:
+      # - ./pgadmin-servers.json:/var/lib/pgadmin/storage/pgadmin_pgadmin.com/servers.json
 
   conjur:
     image: cyberark/conjur
@@ -72,7 +72,7 @@ services:
     command: server
     environment:
       DATABASE_URL: postgres://postgres@database/postgres
-      CONJUR_DATA_KEY:
+      CONJUR_DATA_KEY: FWxDdCYVP9XM+vHfn+YUGvIMJ/6XBsA3qaHZ+x3tC/0=
       CONJUR_AUTHENTICATORS:
     depends_on:
     - database
@@ -101,3 +101,16 @@ services:
     command: infinity
     volumes:
     - ./conf/policy:/policy
+  
+  conjur_go:
+    image: golang:1.19
+    container_name: conjur_go
+    working_dir: /src
+    environment:
+      CONJUR_DATA_KEY: FWxDdCYVP9XM+vHfn+YUGvIMJ/6XBsA3qaHZ+x3tC/0=
+      DATABASE_URL: postgres://postgres@database/postgres
+    command: bash -c 'cd /src && make build && ./conjurctl server --bind-address=0.0.0.0'
+    volumes:
+    - ../conjur-in-go:/src
+    ports:
+      - 8000:8000
