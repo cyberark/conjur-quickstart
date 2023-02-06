@@ -36,7 +36,8 @@ services:
     image: postgres:10.16
     container_name: postgres_database
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_HOST_AUTH_METHOD: password
+      POSTGRES_PASSWORD: SuperSecretPg
     ports:
       - 8432:5432
 
@@ -54,7 +55,7 @@ services:
     container_name: conjur_server
     command: server
     environment:
-      DATABASE_URL: postgres://postgres@database/postgres
+      DATABASE_URL: postgres://postgres:SuperSecretPg@database/postgres
       CONJUR_DATA_KEY:
       CONJUR_AUTHENTICATORS:
     depends_on:
