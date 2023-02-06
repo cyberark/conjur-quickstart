@@ -188,7 +188,7 @@ user that represents your application, and a variable.
    Log in to Conjur as admin. When prompted for a password, insert the API key
    stored in the `admin_data` file:
    ```
-   docker-compose exec client conjur login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
    **Verification**
@@ -241,7 +241,7 @@ In this unit you will learn how to store your first secret in Conjur.
    Log in as Dave, the human user. When prompted for a password, copy and paste
    Dave’s API key stored in the `my_app_data` file:
    ```
-   docker-compose exec client conjur login -u Dave@BotApp
+   docker-compose exec client conjur login -i Dave@BotApp
    ```
 
    **Verification**
@@ -454,7 +454,7 @@ state, you can restart your environment as follows:
    API key stored in the `admin_data` file:
 
    ```
-   docker-compose exec client conjur login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
    **Verification**
@@ -562,7 +562,7 @@ Then try the following:
    And log in again, e.g.:
 
    ```
-   docker-compose exec client conjur login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
 1. If "A server is already running" does not show in the Conjur container
@@ -576,7 +576,7 @@ Then try the following:
    and try logging in again, e.g.:
 
    ```
-   docker-compose exec client conjur login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
 ## Contributing
