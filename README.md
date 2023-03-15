@@ -83,12 +83,14 @@ admin user.
    When the required images are successfully pulled, the terminal returns the
    following:
    ```
-   Pulling openssl ... done
-   Pulling bot_app ... done
-   Pulling database ... done
-   Pulling conjur ... done
-   Pulling proxy ... done
-   Pulling client ... done
+   ⠿ openssl Skipped - Image is already being pulled by conjur
+   ⠿ database Pulled
+   ⠿ bot_app Pulled
+   ⠿ proxy Pulled
+   ⠿ pgadmin Pulled
+     ...
+   ⠿ conjur Pulled
+   ⠿ client Pulled
    ```
 
 1. Generate the master key
@@ -107,7 +109,7 @@ admin user.
    **Verification**
    When the key is generated, the terminal returns the following:
    ```
-   Creating network "conjur-quickstart_default" with the default driver
+   Network conjur-quickstart_default  Created
    ```
 
 1. Load master key as an environment variable
@@ -126,12 +128,13 @@ admin user.
 
    When Conjur Open Source starts, the terminal returns the following:
    ```
-   Creating postgres_database ... done
-   Creating bot_app ... done
-   Creating openssl ... done
-   Creating conjur_server ... done
-   Creating nginx_proxy ... done
-   Creating conjur_client ... done
+   ⠿ Container bot_app                      Started
+   ⠿ Container conjur-quickstart-pgadmin-1  Started
+   ⠿ Container postgres_database            Started
+   ⠿ Container openssl                      Started
+   ⠿ Container conjur_server                Started
+   ⠿ Container nginx_proxy                  Started
+   ⠿ Container conjur_client                Started
    ```
 
    **Verification**
@@ -167,6 +170,7 @@ admin user.
    **Verification**
    The terminal returns the following output:
    ```
+   Wrote certificate to /root/conjur-server.pem
    Wrote configuration to /root/.conjurrc
    ```
 
@@ -252,7 +256,13 @@ In this unit you will learn how to store your first secret in Conjur.
 
    The terminal returns:
    ```
-   {"account":"myConjurAccount","username":"Dave@BotApp"}
+   {
+     "client_ip": "xxx.xx.x.x",
+     "user_agent": "Go-http-client/1.1",
+     "account": "myConjurAccount",
+     "username": "Dave@BotApp",
+     "token_issued_at": "yyyy-mm-ddThh:mm:ss.sss+00:00"
+   }
    ```
 
 1. Generate a secret
@@ -277,7 +287,7 @@ In this unit you will learn how to store your first secret in Conjur.
    **Verification**
    The terminal returns a message:
    ```
-   Value added.
+   Value added
    ```
 
 #### Run the demo app
