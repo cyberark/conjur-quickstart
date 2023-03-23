@@ -72,7 +72,7 @@ announce "UNIT 2. Define Policy"
 
 echo "Step 1: Log in to Conjur as admin"
 admin_api_key="$(cat admin_data | awk '/API key for admin/{print $NF}' | tr -d '\r')"
-docker-compose exec -T client conjur login -u admin -p ${admin_api_key}
+docker-compose exec -T client conjur login -i admin -p ${admin_api_key}
 echo
 
 echo "Step 2: Load the Sample Policy"
