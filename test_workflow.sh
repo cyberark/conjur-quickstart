@@ -88,7 +88,7 @@ announce "UNIT 3. Store a Secret in Conjur"
 echo "Step 1: Log in as Dave"
 cat my_app_data | awk '/"api_key":/{print $NF}' | tr -d '"' > my_api_keys
 dave_api_key="$(cat my_api_keys | awk 'NR==2')"
-docker-compose exec -T client conjur login -u Dave@BotApp -p ${dave_api_key}
+docker-compose exec -T client conjur login -i Dave@BotApp -p ${dave_api_key}
 echo
 
 echo "Step 2: Generate Secret"
