@@ -1,4 +1,5 @@
 my_app_data
 data_key
 admin_data
+my_api_keys
 conf/tls/nginx.*

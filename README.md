@@ -83,12 +83,14 @@ admin user.
    When the required images are successfully pulled, the terminal returns the
    following:
    ```
-   Pulling openssl ... done
-   Pulling bot_app ... done
-   Pulling database ... done
-   Pulling conjur ... done
-   Pulling proxy ... done
-   Pulling client ... done
+   ⠿ openssl Skipped - Image is already being pulled by conjur
+   ⠿ database Pulled
+   ⠿ bot_app Pulled
+   ⠿ proxy Pulled
+   ⠿ pgadmin Pulled
+     ...
+   ⠿ conjur Pulled
+   ⠿ client Pulled
    ```
 
 1. Generate the master key
@@ -107,7 +109,7 @@ admin user.
    **Verification**
    When the key is generated, the terminal returns the following:
    ```
-   Creating network "conjur-quickstart_default" with the default driver
+   Network conjur-quickstart_default  Created
    ```
 
 1. Load master key as an environment variable
@@ -126,12 +128,13 @@ admin user.
 
    When Conjur Open Source starts, the terminal returns the following:
    ```
-   Creating postgres_database ... done
-   Creating bot_app ... done
-   Creating openssl ... done
-   Creating conjur_server ... done
-   Creating nginx_proxy ... done
-   Creating conjur_client ... done
+   ⠿ Container bot_app                      Started
+   ⠿ Container conjur-quickstart-pgadmin-1  Started
+   ⠿ Container postgres_database            Started
+   ⠿ Container openssl                      Started
+   ⠿ Container conjur_server                Started
+   ⠿ Container nginx_proxy                  Started
+   ⠿ Container conjur_client                Started
    ```
 
    **Verification**
@@ -158,14 +161,16 @@ admin user.
    additional initcommand is issued, the Conjur client and the Conjur server
    remain connected.
 
-   Use the account name that you created in step 5:
+   Use the account name that you created in step 5. You will be prompted to trust
+   the TLS certificate of the Conjur server. Type `y` to trust the certificate:
    ```
-   docker-compose exec client conjur init -u conjur -a myConjurAccount
+   docker-compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
    ```
 
    **Verification**
    The terminal returns the following output:
    ```
+   Wrote certificate to /root/conjur-server.pem
    Wrote configuration to /root/.conjurrc
    ```
 
@@ -187,7 +192,7 @@ user that represents your application, and a variable.
    Log in to Conjur as admin. When prompted for a password, insert the API key
    stored in the `admin_data` file:
    ```
-   docker-compose exec client conjur authn login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
    **Verification**
@@ -201,7 +206,7 @@ user that represents your application, and a variable.
    Load the provided sample policy into Conjur built-in `root` policy to create
    the resources for the BotApp:
    ```
-   docker-compose exec client conjur policy load root policy/BotApp.yml > my_app_data
+   docker-compose exec client conjur policy load -b root -f policy/BotApp.yml > my_app_data
    ```
 
    Conjur generates the following API keys and stores them in a file, my_app_data:
@@ -222,7 +227,7 @@ user that represents your application, and a variable.
 
    Log out of Conjur:
    ```
-   docker-compose exec client conjur authn logout
+   docker-compose exec client conjur logout
    ```
 
    **Verification**
@@ -240,18 +245,24 @@ In this unit you will learn how to store your first secret in Conjur.
    Log in as Dave, the human user. When prompted for a password, copy and paste
    Dave’s API key stored in the `my_app_data` file:
    ```
-   docker-compose exec client conjur authn login -u Dave@BotApp
+   docker-compose exec client conjur login -i Dave@BotApp
    ```
 
    **Verification**
    To verify that you logged in successfully, run:
    ```
-   docker-compose exec client conjur authn whoami
+   docker-compose exec client conjur whoami
    ```
 
    The terminal returns:
    ```
-   {"account":"myConjurAccount","username":"Dave@BotApp"}
+   {
+     "client_ip": "xxx.xx.x.x",
+     "user_agent": "Go-http-client/1.1",
+     "account": "myConjurAccount",
+     "username": "Dave@BotApp",
+     "token_issued_at": "yyyy-mm-ddThh:mm:ss.sss+00:00"
+   }
    ```
 
 1. Generate a secret
@@ -267,7 +278,7 @@ In this unit you will learn how to store your first secret in Conjur.
 
    Store the generated value in Conjur:
    ```
-   docker-compose exec client conjur variable values add BotApp/secretVar ${secretVal}
+   docker-compose exec client conjur variable set -i BotApp/secretVar -v ${secretVal}
    ```
 
    A policy predefined variable named `BotApp/secretVar` is set with a random
@@ -276,7 +287,7 @@ In this unit you will learn how to store your first secret in Conjur.
    **Verification**
    The terminal returns a message:
    ```
-   Value added.
+   Value added
    ```
 
 #### Run the demo app
@@ -446,14 +457,14 @@ state, you can restart your environment as follows:
    example:
 
    ```
-   docker-compose exec client conjur init -u conjur -a myConjurAccount
+   docker-compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
    ```
 
 1. Log in again to Conjur as admin. When prompted for a password, insert the
    API key stored in the `admin_data` file:
 
    ```
-   docker-compose exec client conjur authn login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
    **Verification**
@@ -561,7 +572,7 @@ Then try the following:
    And log in again, e.g.:
 
    ```
-   docker-compose exec client conjur authn login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
 1. If "A server is already running" does not show in the Conjur container
@@ -575,7 +586,7 @@ Then try the following:
    and try logging in again, e.g.:
 
    ```
-   docker-compose exec client conjur authn login -u admin
+   docker-compose exec client conjur login -i admin
    ```
 
 ## Contributing
