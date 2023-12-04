@@ -58,6 +58,7 @@ services:
       DATABASE_URL: postgres://postgres:SuperSecretPg@database/postgres
       CONJUR_DATA_KEY:
       CONJUR_AUTHENTICATORS:
+      CONJUR_TELEMETRY_ENABLED: 'false'
     depends_on:
     - database
     restart: on-failure
