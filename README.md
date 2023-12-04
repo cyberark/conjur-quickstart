@@ -77,7 +77,7 @@ admin user.
    Open a terminal session and browse to `conjur-quickstart`. Pull the Docker
    images defined in `docker-compose.yml`:
    ```
-   docker-compose pull
+   docker compose pull
    ```
 
    **Verification**
@@ -102,7 +102,7 @@ admin user.
    _* **Tip**: Although not mandatory, we prefer to store sensitive data to a
    file and not to display it directly on console screen._
    ```
-   docker-compose run --no-deps --rm conjur data-key generate > data_key
+   docker compose run --no-deps --rm conjur data-key generate > data_key
    ```
 
    The data key is generated in the working directory and is stored in a file called data_key.
@@ -124,7 +124,7 @@ admin user.
 
    Start the Conjur Open Source environment:
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
    When Conjur Open Source starts, the terminal returns the following:
@@ -148,7 +148,7 @@ admin user.
 
    Create a Conjur account and initialize the built-in admin user.
    ```
-   docker-compose exec conjur conjurctl account create myConjurAccount > admin_data
+   docker compose exec conjur conjurctl account create myConjurAccount > admin_data
    ```
 
    An account named myConjurAccount is created and the admin user is initialized,
@@ -165,7 +165,7 @@ admin user.
    Use the account name that you created in step 5. You will be prompted to trust
    the TLS certificate of the Conjur server. Type `y` to trust the certificate:
    ```
-   docker-compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
+   docker compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
    ```
 
    **Verification**
@@ -193,7 +193,7 @@ user that represents your application, and a variable.
    Log in to Conjur as admin. When prompted for a password, insert the API key
    stored in the `admin_data` file:
    ```
-   docker-compose exec client conjur login -i admin
+   docker compose exec client conjur login -i admin
    ```
 
    **Verification**
@@ -207,7 +207,7 @@ user that represents your application, and a variable.
    Load the provided sample policy into Conjur built-in `root` policy to create
    the resources for the BotApp:
    ```
-   docker-compose exec client conjur policy load -b root -f policy/BotApp.yml > my_app_data
+   docker compose exec client conjur policy load -b root -f policy/BotApp.yml > my_app_data
    ```
 
    Conjur generates the following API keys and stores them in a file, my_app_data:
@@ -228,7 +228,7 @@ user that represents your application, and a variable.
 
    Log out of Conjur:
    ```
-   docker-compose exec client conjur logout
+   docker compose exec client conjur logout
    ```
 
    **Verification**
@@ -246,13 +246,13 @@ In this unit you will learn how to store your first secret in Conjur.
    Log in as Dave, the human user. When prompted for a password, copy and paste
    Dave’s API key stored in the `my_app_data` file:
    ```
-   docker-compose exec client conjur login -i Dave@BotApp
+   docker compose exec client conjur login -i Dave@BotApp
    ```
 
    **Verification**
    To verify that you logged in successfully, run:
    ```
-   docker-compose exec client conjur whoami
+   docker compose exec client conjur whoami
    ```
 
    The terminal returns:
@@ -279,7 +279,7 @@ In this unit you will learn how to store your first secret in Conjur.
 
    Store the generated value in Conjur:
    ```
-   docker-compose exec client conjur variable set -i BotApp/secretVar -v ${secretVal}
+   docker compose exec client conjur variable set -i BotApp/secretVar -v ${secretVal}
    ```
 
    A policy predefined variable named `BotApp/secretVar` is set with a random
@@ -381,11 +381,11 @@ Note that the environment variables takes precedence.
    telemetry, bring down the Conjur container:
 
    ```
-   docker-compose down conjur
+   docker compose down conjur
    ```
 
 1. Modify `docker-compose.yml` in this repository to enable telemetry
-   by setting the `CONJUR_TELEMETRY_ENABLED` environment variable to the value `'true'` (It needs to be a string otherwise the docker-compose YAML parser will not be happy). Below is an illustration of the required change:
+   by setting the `CONJUR_TELEMETRY_ENABLED` environment variable to the value `'true'` (It needs to be a string otherwise the docker compose YAML parser will not be happy). Below is an illustration of the required change:
 
    ```yaml
    services:
@@ -416,7 +416,7 @@ Note that the environment variables takes precedence.
 
 The following command will allow you to specify the admin user's password:
 ```
-docker-compose exec conjur bash -c 'echo -n "MySecretP@SS1" | conjurctl account create --password-from-stdin --name  myConjurAccount'
+docker compose exec conjur bash -c 'echo -n "MySecretP@SS1" | conjurctl account create --password-from-stdin --name  myConjurAccount'
 ```
 The password must be provided via STDIN in any manner you prefer and must meet
 the following complexity rules:
@@ -442,7 +442,7 @@ the host to persist Conjur configuration across container restarts.
    persistence, bring down the associated containers:
 
    ```
-   docker-compose down
+   docker compose down
    ```
 
 1. Create a directory for storing persistent state. For example:
@@ -452,7 +452,7 @@ the host to persist Conjur configuration across container restarts.
    ```
 
    _**NOTE: The permissions on this directory will automatically be changed
-   to 700 by docker-compose when the directory gets host-mounted by the
+   to 700 by docker compose when the directory gets host-mounted by the
    Conjur container.**_
 
 1. Modify `docker-compose.yml` in this repository to support persistent
@@ -490,12 +490,12 @@ state, you can restart your environment as follows:
 1. Bring the containers down:
 
    ```
-   docker-compose down
+   docker compose down
    ```
 
-   _**NOTE: You must use the `docker-compose down` command here rather than
-   the `docker-compose stop` in order to avoid having stale, ephemeral
-   connection state in the Conjur container. If you use the `docker-compose
+   _**NOTE: You must use the `docker compose down` command here rather than
+   the `docker compose stop` in order to avoid having stale, ephemeral
+   connection state in the Conjur container. If you use the `docker compose
    stop` command here instead, you may see errors as described in the
    [`Failed to open TCP connection` error for Conjur login](#failed-to-open-tcp-connection-error-for-conjur-login)
    section below.**_
@@ -503,7 +503,7 @@ state, you can restart your environment as follows:
 1. Bring the containers back up:
 
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
 1. Reconnect the Conjur client to the Conjur server. Use the account name
@@ -512,14 +512,14 @@ state, you can restart your environment as follows:
    example:
 
    ```
-   docker-compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
+   docker compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
    ```
 
 1. Log in again to Conjur as admin. When prompted for a password, insert the
    API key stored in the `admin_data` file:
 
    ```
-   docker-compose exec client conjur login -i admin
+   docker compose exec client conjur login -i admin
    ```
 
    **Verification**
@@ -565,7 +565,7 @@ service container.
 1. Recreate the container
 
    ```
-   docker-compose up -d --no-deps conjur
+   docker compose up -d --no-deps conjur
    ```
 
    The new container now contains the updated configuration defined in `docker-compose.yml`.
@@ -575,7 +575,7 @@ service container.
    Run the following:
 
    ```
-   docker-compose exec conjur printenv CONJUR_LOG_LEVEL
+   docker compose exec conjur printenv CONJUR_LOG_LEVEL
    ```
 
    If the environment variable was correctly assigned in the container, the terminal returns
@@ -602,7 +602,7 @@ Then try the following:
 1. Run the following command:
 
    ```
-   docker-compose logs conjur | grep "already running"
+   docker compose logs conjur | grep "already running"
    ```
 
 1. If the command in Step 1 produces the following line:
@@ -612,36 +612,36 @@ Then try the following:
    ```
 
    then it may be that the Conjur container was stopped (e.g.
-   `docker-compose stop conjur`) and restarted
-   (`docker-compose up -d conjur`)
-   without being brought fully down (e.g. with `docker-compose down conjur`),
+   `docker compose stop conjur`) and restarted
+   (`docker compose up -d conjur`)
+   without being brought fully down (e.g. with `docker compose down conjur`),
    leaving the container with stale connection state.
 
    To recover from this, run:
 
    ```
-   docker-compose down conjur
-   docker-compose up -d conjur
+   docker compose down conjur
+   docker compose up -d conjur
    ```
 
    And log in again, e.g.:
 
    ```
-   docker-compose exec client conjur login -i admin
+   docker compose exec client conjur login -i admin
    ```
 
 1. If "A server is already running" does not show in the Conjur container
    logs, or Step 2 above is unsuccessful, then try restarting all containers:
 
    ```
-   docker-compose down
-   docker-compose up -d
+   docker compose down
+   docker compose up -d
    ```
 
    and try logging in again, e.g.:
 
    ```
-   docker-compose exec client conjur login -i admin
+   docker compose exec client conjur login -i admin
    ```
 
 ## Contributing

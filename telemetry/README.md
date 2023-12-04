@@ -24,7 +24,7 @@ The "important" tasks listed above are really just carried out by providing conf
    Open a terminal session and change directory to the folder containg this README. Pull the Docker
    images defined in `docker-compose.yml`:
    ```
-   docker-compose pull
+   docker compose pull
    ```
 
    **Verification**
@@ -43,7 +43,7 @@ The "important" tasks listed above are really just carried out by providing conf
 
    Start the services:
    ```
-   docker-compose up -d
+   docker compose up -d
    ```
 
    When the services start the terminal returns the following:
@@ -58,7 +58,7 @@ The "important" tasks listed above are really just carried out by providing conf
    **Verification**
    Run the following command to see a list of running containers:
    ```
-   docker-compose ps
+   docker compose ps
    ```
 
 1. Use the Grafana UI

@@ -25,6 +25,8 @@ services:
       - ./files/grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./files/grafana/provisioning:/etc/grafana/provisioning
       - ./files/grafana/dashboards:/etc/grafana/dashboards
+    depends_on:
+      - prometheus
 
   # Node exporter provides CPU and Memory metrics to Prometheus for the Docker
   # host machine.
