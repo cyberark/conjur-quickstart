@@ -33,7 +33,7 @@ services:
     restart: on-failure
 
   database:
-    image: postgres:10.16
+    image: postgres:15
     container_name: postgres_database
     environment:
       POSTGRES_HOST_AUTH_METHOD: password
@@ -66,7 +66,7 @@ services:
       - 8080:80
 
   proxy:
-    image: nginx:1.13.6-alpine
+    image: nginx:latest
     container_name: nginx_proxy
     ports:
       - "8443:443"
