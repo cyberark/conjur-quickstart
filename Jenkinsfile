@@ -44,7 +44,7 @@ pipeline {
     stage('Get InfraPool Agents') {
       steps{
         script {
-          INFRAPOOL_EXECUTORV2_AGENT_0 = getInfraPoolAgent.connected(type: "ExecutorV2", quantity: 1, duration: 1)[0]
+          infrapool = getInfraPoolAgent.connected(type: "ExecutorV2", quantity: 1, duration: 1)[0]
         }
       }
     }
@@ -52,7 +52,7 @@ pipeline {
     stage('Test workflow') {
       steps {
         script {
-          INFRAPOOL_EXECUTORV2_AGENT_0.agentSh './test_workflow.sh'
+          infrapool.agentSh './test_workflow.sh'
         }
       }
     }
