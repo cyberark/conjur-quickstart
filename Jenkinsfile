@@ -49,6 +49,21 @@ pipeline {
       }
     }
 
+    stage('Validate Changelog') {
+      steps { 
+        script {
+          parseChangelog(infrapool)
+        }
+      }
+    }
+
+    // Generates a VERSION file based on the current build number and latest version in CHANGELOG.md
+    stage('Validate Changelog and set version') {
+      steps {
+        updateVersion(infrapool, "CHANGELOG.md", "${BUILD_NUMBER}")
+      }
+    }
+
     stage('Test workflow') {
       steps {
         script {
