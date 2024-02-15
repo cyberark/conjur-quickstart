@@ -15,4 +15,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
+[Unreleased]: https://github.com/cyberark/conjur/compare/v0.0.1...HEAD
 [0.0.1]: https://github.com/cyberark/conjur-cli-go/releases/tag/v0.0.1
