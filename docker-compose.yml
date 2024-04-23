@@ -1,7 +1,7 @@
 version: '3'
 services:
   openssl:
-    image: cyberark/conjur
+    image: docker.io/cyberark/conjur
     container_name: openssl
     entrypoint:
      - openssl
@@ -21,19 +21,19 @@ services:
      - -out
      - /tmp/conf/nginx.crt
     volumes:
-     - ./conf/tls/:/tmp/conf
+     - ./conf/tls/:/tmp/conf:z
 
   bot_app:
-    image: cfmanteiga/alpine-bash-curl-jq
+    image: docker.io/cfmanteiga/alpine-bash-curl-jq
     privileged: true
     container_name: bot_app
     command: tail -F anything
     volumes:
-    - ./program.sh:/tmp/program.sh
+    - ./program.sh:/tmp/program.sh:z
     restart: on-failure
 
   database:
-    image: postgres:15
+    image: docker.io/postgres:15
     container_name: postgres_database
     environment:
       POSTGRES_HOST_AUTH_METHOD: password
@@ -43,7 +43,7 @@ services:
 
   pgadmin:
 #    https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
-    image: dpage/pgadmin4
+    image: docker.io/dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
       PGADMIN_DEFAULT_PASSWORD: SuperSecret
@@ -51,12 +51,12 @@ services:
       - 8081:80
 
   conjur:
-    image: cyberark/conjur
+    image: docker.io/cyberark/conjur
     container_name: conjur_server
     command: server
     environment:
       DATABASE_URL: postgres://postgres:SuperSecretPg@database/postgres
-      CONJUR_DATA_KEY:
+      CONJUR_DATA_KEY: ${CONJUR_DATA_KEY}
       CONJUR_AUTHENTICATORS:
       CONJUR_TELEMETRY_ENABLED: 'false'
     depends_on:
@@ -66,23 +66,23 @@ services:
       - 8080:80
 
   proxy:
-    image: nginx:latest
+    image: docker.io/nginx:latest
     container_name: nginx_proxy
     ports:
       - "8443:443"
     volumes:
-      - ./conf/:/etc/nginx/conf.d/:ro
-      - ./conf/tls/:/etc/nginx/tls/:ro
+      - ./conf/:/etc/nginx/conf.d/:z
+      - ./conf/tls/:/etc/nginx/tls/:z
     depends_on:
     - conjur
     - openssl
     restart: on-failure
 
   client:
-    image: cyberark/conjur-cli:8
+    image: docker.io/cyberark/conjur-cli:8
     container_name: conjur_client
     depends_on: [ proxy ]
     entrypoint: sleep
     command: infinity
     volumes:
-    - ./conf/policy:/policy
+    - ./conf/policy:/policy:z
