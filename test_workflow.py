@@ -4,6 +4,7 @@ import sys
 import time
 import random
 import string
+import json
 
 def announce(message):
     print("++++++++++++++++++++++++++++++++++++++")
@@ -45,6 +46,8 @@ def execute_command_with_attempts(command, action):
             return
         except subprocess.CalledProcessError:
             print(f"{action} attempt failed")
+            if action == "Load BotApp.yml":
+                subprocess.run("podman exec --interactive conjur_client conjur policy replace -b root -f policy/DelBotApp.yml", check=True, shell=True)
             time.sleep(retry_interval)
 
     print(f"Maximum retries reached. Failed to {action}.")
@@ -101,7 +104,12 @@ if __name__ == "__main__":
 
     announce("UNIT 3. Store a Secret in Conjur")
 
-    dave_api_key = subprocess.check_output(["awk", "'/\"api_key\":/{print $NF}'", "my_app_data"]).decode().strip()
+    file_path = 'my_app_data'
+    with open(file_path, 'r') as file:
+        json_data = file.read()
+    data = json.loads(json_data)
+    
+    dave_api_key = [role['api_key'] for role in data['created_roles'].values()][1]
     execute_command(f"podman-compose exec -T client conjur login -i Dave@BotApp -p {dave_api_key}")
     print("")
 
@@ -114,7 +122,7 @@ if __name__ == "__main__":
 
     announce("UNIT 4. Run the Demo App")
 
-    bot_api_key = subprocess.check_output(["awk", "'NR==1'"]).decode().strip()
+    bot_api_key = [role['api_key'] for role in data['created_roles'].values()][0]
     execute_command(f"podman-compose exec -T bot_app bash -c \"curl -d '{bot_api_key}' -k https://proxy/authn/myConjurAccount/host%2FBotApp%2FmyDemoApp/authenticate > /tmp/conjur_token\"")
     print("")
 
