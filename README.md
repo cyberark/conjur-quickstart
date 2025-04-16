@@ -3,6 +3,8 @@
 This repository guides you through a sample installation of Conjur Open Source
 using Docker Compose.
 
+__THIS REPO IS INTENDED ONLY FOR DEMO PURPOSES AND SHOULD NOT BE USED FOR CREATING PRODUCTION INSTANCES OF CONJUR OSS__
+
 - [Certification level](#certification-level)
 - [Requirements](#requirements)
 - [Usage instructions](#usage-instructions)
