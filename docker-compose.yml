@@ -39,7 +39,7 @@ services:
       POSTGRES_HOST_AUTH_METHOD: password
       POSTGRES_PASSWORD: SuperSecretPg
     ports:
-      - 8432:5432
+      - "8432:5432"
 
   pgadmin:
 #    https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
@@ -48,7 +48,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
       PGADMIN_DEFAULT_PASSWORD: SuperSecret
     ports:
-      - 8081:80
+      - "8081:80"
 
   conjur:
     image: cyberark/conjur
@@ -63,7 +63,7 @@ services:
     - database
     restart: on-failure
     ports:
-      - 8080:80
+      - "8080:80"
 
   proxy:
     image: nginx:latest
