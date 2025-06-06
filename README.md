@@ -316,7 +316,7 @@ securely.
 
 1. Generate a Conjur token
 
-   Generate a Conjur using the BotApp API key stored in the `my_app_data` file:
+   Generate a Conjur token using the BotApp API key stored in the `my_app_data` file:
    ```
    curl -d "<BotApp API Key>" -k https://proxy/authn/myConjurAccount/host%2FBotApp%2FmyDemoApp/authenticate > /tmp/conjur_token
    ```
