@@ -1,4 +1,3 @@
-version: '3'
 services:
   pg-prometheus-exporter:
     image: quay.io/prometheuscommunity/postgres-exporter
