@@ -91,7 +91,6 @@ admin user.
    ⠿ bot_app Pulled
    ⠿ proxy Pulled
    ⠿ pgadmin Pulled
-     ...
    ⠿ conjur Pulled
    ⠿ client Pulled
    ```
@@ -107,7 +106,7 @@ admin user.
    docker compose run --no-deps --rm conjur data-key generate > data_key
    ```
 
-   The data key is generated in the working directory and is stored in a file called data_key.
+   The data key is generated in the working directory and is stored in a file called `data_key`.
 
    **Verification**
    When the key is generated, the terminal returns the following:
@@ -143,7 +142,7 @@ admin user.
    **Verification**
    Run the following command to see a list of running containers:
    ```
-   docker ps -a
+   docker ps
    ```
 
 1. Create an admin account
@@ -153,9 +152,15 @@ admin user.
    docker compose exec conjur conjurctl account create myConjurAccount > admin_data
    ```
 
-   An account named myConjurAccount is created and the admin user is initialized,
-   following keys are created and stored at admin_data file:
-   - admin user API key. Later on, we will use this key to log in to Conjur.
+   **Verification**
+   Creating a Conjur account should return the following output in the terminal:
+   ```
+   Created new account 'myConjurAccount'
+   ```
+
+   Once the Conjur account has been created and the admin user is initialized, the
+   following keys are created and stored at `admin_data` file:
+   - Admin user API key. Later on, we will use this key to log in to Conjur.
    - `myConjurAccount` Conjur account public key.
 
 1. Connect the Conjur client to the Conjur server
@@ -181,7 +186,7 @@ admin user.
 
 In this unit you will learn how to load your first policy.
 Formatted in YAML, policy defines Conjur entities and the relationships between
-them.  An entity can be a policy, a host, a user, a layer, a group, or a variable.
+them. An entity can be a policy, host, user, layer, group, or variable.
 
 A sample application policy named BotApp.yml is provided in the client container
 under policy directory.
@@ -218,7 +223,7 @@ user that represents your application, and a variable.
    - An API key for BotApp, the non-human identity. This key is used to
      authenticate BotApp application to Conjur.
 
-   Those API keys is correlated with the number of Users & Hosts defined in a policy.
+   Those API keys are correlated with the number of Users & Hosts defined in a policy.
 
    **Verification**
    The terminal returns:
@@ -311,12 +316,12 @@ securely.
 
 1. Generate a Conjur token
 
-   Generate a Conjur token to the conjur_token file, using the BotApp API key:
+   Generate a Conjur token using the BotApp API key stored in the `my_app_data` file:
    ```
    curl -d "<BotApp API Key>" -k https://proxy/authn/myConjurAccount/host%2FBotApp%2FmyDemoApp/authenticate > /tmp/conjur_token
    ```
 
-   The Conjur token is stored in the conjur_token file.
+   The Conjur token is stored in the `conjur_token` file.
 
 1. Fetch the secret
 
@@ -327,7 +332,7 @@ securely.
 
    The secret is displayed.
 
-   TIP: If the secret is not displayed, try generating the token again.  You have eight minutes between generating the conjur token and fetching the secret with BotApp.
+   _* **TIP**: If the secret is not displayed, try generating the token again.  You have eight minutes between generating the conjur token and fetching the secret with BotApp._
 
 **Congratulations! You are ready to secure your own apps with Conjur.**
 
@@ -336,7 +341,7 @@ securely.
 Now that you've got a local Conjur instance running, what can you do with it?
 
 Try some of our [tutorials](https://www.conjur.org/get-started/tutorials/) on
-Conjur.org.
+[Conjur.org](https://www.conjur.org/).
 
 ### Explore the Conjur database
 
@@ -345,7 +350,7 @@ discover and explore the database schema, stored procedures and triggers that co
 significant part of the inner working of Conjur. It offers a glimpse into the data model
 of Conjur.
 
-This section should follow only after completion of the [Store a secret](#store-a-secret)
+This section should be followed only after completion of the [Store a secret](#store-a-secret)
 section. There's more insight to be gleamed from the database when it has become reasonably populated
 with some representative data i.e. roles, identities, permissions etc.
 
@@ -516,6 +521,12 @@ state, you can restart your environment as follows:
    ```
    docker compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
    ```
+   **Verification**
+   When you successfully reconnect the Conjur client to the Conjur Server, the terminal returns:
+   ```
+   Wrote certificate to /root/conjur-server.pem
+   Wrote configuration to /root/.conjurrc
+   ```
 
 1. Log in again to Conjur as admin. When prompted for a password, insert the
    API key stored in the `admin_data` file:
@@ -533,9 +544,12 @@ state, you can restart your environment as follows:
 #### Delete the Conjur data directory when done
 
 For added security, remember to delete the data directory that you created
-in Step 1 of the
+in Step 2 of the
 [Set up a Conjur Open Source environment with persistence](#set-up-a-conjur-open-source-environment-with-persistence)
 section above.
+```
+rm -r temp-db-data
+```
 
 ### Adding or Modifying Container Environment Variables
 
@@ -555,7 +569,6 @@ service container.
    and are of the form:
 
    ```
-   version: '3'
    services:
      ...
      conjur:
