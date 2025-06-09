@@ -21,7 +21,7 @@ The "important" tasks listed above are really just carried out by providing conf
 
 1. Pull the Docker images
 
-   Open a terminal session and change directory to the folder containg this README. Pull the Docker
+   Open a terminal session and change directory to the telemetry folder containg this README. Pull the Docker
    images defined in `docker-compose.yml`:
    ```
    docker compose pull
@@ -31,7 +31,7 @@ The "important" tasks listed above are really just carried out by providing conf
    When the required images are successfully pulled, the terminal returns the
    following:
    ```
-   [+] Running 4/4
+   [+] Pulling 4/4
    ⠿ node-exporter Pulled                                                                                           1.4s
    ⠿ prometheus Pulled                                                                                              1.4s
    ⠿ pg-prometheus-exporter Pulled                                                                                  1.4s
@@ -48,7 +48,7 @@ The "important" tasks listed above are really just carried out by providing conf
 
    When the services start the terminal returns the following:
    ```
-   [+] Running 4/0
+   [+] Running 4/4
    ⠿ Container telemetry-grafana-1                 Running                                                          0.0s
    ⠿ Container telemetry-node-exporter-1           Running                                                          0.0s
    ⠿ Container telemetry-pg-prometheus-exporter-1  Running                                                          0.0s
