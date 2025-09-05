@@ -20,7 +20,7 @@ services:
      - -out
      - /tmp/conf/nginx.crt
     volumes:
-     - ./conf/tls/:/tmp/conf
+     - ./conf/tls/:/tmp/conf:z
 
   bot_app:
     image: cfmanteiga/alpine-bash-curl-jq
