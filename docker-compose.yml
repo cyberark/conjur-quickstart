@@ -58,6 +58,12 @@ services:
       CONJUR_DATA_KEY:
       CONJUR_AUTHENTICATORS:
       CONJUR_TELEMETRY_ENABLED: 'false'
+      # By default Conjur API only returns 1000 resources (since 1.22.0)
+      # However this repo is used in testing scenarios where more than
+      # 1000 resources are present, so increase the limit.
+      # This is not a DoS risk as this code is not
+      # and must not be used for any form of production deployment.
+      CONJUR_API_RESOURCE_LIST_LIMIT_MAX: 5000
     depends_on:
     - database
     restart: on-failure
