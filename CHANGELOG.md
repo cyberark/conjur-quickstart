@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Nothing should go in this section, please add to the latest unreleased version
   (and update the corresponding date), or add a new version.
 
+## [0.0.3] - 2025-10-16
+
+### Changed
+- Updated documentation to align with Conjur Enterprise name change to Secrets Manager. (CNJR-11001)
+
 ## [0.0.2] - 2025-05-30
 
 ### Changed
@@ -22,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial release
 
-[Unreleased]: https://github.com/cyberark/conjur-quickstart/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/cyberark/conjur-quickstart/compare/v0.0.3...HEAD
+[0.0.3]: https://github.com/cyberark/conjur-quickstart/releases/tag/v0.0.3
 [0.0.2]: https://github.com/cyberark/conjur-quickstart/releases/tag/v0.0.2
 [0.0.1]: https://github.com/cyberark/conjur-quickstart/releases/tag/v0.0.1
