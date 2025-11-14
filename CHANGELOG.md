@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Nothing should go in this section, please add to the latest unreleased version
   (and update the corresponding date), or add a new version.
 
+## [0.0.4] - 2025-11-14
+
+- Updated Docker Compose, README, and test scripts to use Conjur CLI v9 (CNJR-11811)
+
 ## [0.0.3] - 2025-10-16
 
 ### Changed
