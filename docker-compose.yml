@@ -84,7 +84,7 @@ services:
     restart: on-failure
 
   client:
-    image: cyberark/conjur-cli:8
+    image: cyberark/conjur-cli:9
     container_name: conjur_client
     depends_on: [ proxy ]
     entrypoint: sleep

@@ -166,10 +166,11 @@ admin user.
 1. Connect the Conjur Open Source client to the server
 
    This is a one-time action. For the duration of the container’s life or until
-   additional initcommand is issued, the client and the server remain connected.
+   additional init command is issued, the client and the server remain connected.
 
    Use the account name that you created in step 5. You will be prompted to trust
-   the TLS certificate of the server. Type `y` to trust the certificate:
+   the TLS certificate of the server. Type `y` to trust the certificate. In addition, you will be prompted to select the environment you want to use. Select Conjur Open Source.
+
    ```
    docker compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
    ```
@@ -512,6 +513,7 @@ you can restart your environment as follows:
 1. Reconnect the client to the server. Use the account name
    that you created in the
    [create an admin account](#create-an-admin-account) section above.
+   You will also be prompted to select the environment - choose Conjur Open Source.
    For example:
 
    ```

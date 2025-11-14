@@ -65,7 +65,7 @@ echo
 
 echo "Step 6: Connect the Conjur client to the Conjur server"
 # `echo "Y"` is used to accept the self-signed certificate
-echo "Y" | docker container exec -i conjur_client conjur init -u https://proxy -a myConjurAccount --self-signed
+echo "Y" | docker container exec -i conjur_client conjur init oss -u https://proxy -a myConjurAccount --self-signed
 echo
 
 announce "UNIT 2. Define Policy"
