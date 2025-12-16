@@ -76,8 +76,8 @@ services:
     ports:
       - "8443:443"
     volumes:
-      - ./conf/:/etc/nginx/conf.d/:ro
-      - ./conf/tls/:/etc/nginx/tls/:ro
+      - ./conf/:/etc/nginx/conf.d/:ro,z
+      - ./conf/tls/:/etc/nginx/tls/:ro,z
     depends_on:
     - conjur
     - openssl
