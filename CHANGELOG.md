@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Nothing should go in this section, please add to the latest unreleased version
   (and update the corresponding date), or add a new version.
 
+## [0.0.5] - 2025-12-16
+
+### Fixed
+
+- Fixed error when running on SELinux ([cyberark/conjur-quickstart#3023](https://github.com/cyberark/conjur/issues/3023))
+- Updated `conjur init` command in README to include `oss` argument
+
 ## [0.0.4] - 2025-11-14
 
 ### Changed

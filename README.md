@@ -172,7 +172,7 @@ admin user.
    the TLS certificate of the server. Type `y` to trust the certificate. In addition, you will be prompted to select the environment you want to use. Select Conjur Open Source.
 
    ```
-   docker compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
+   docker compose exec client conjur init oss -u https://proxy -a myConjurAccount --self-signed
    ```
 
    **Verification**
@@ -517,7 +517,7 @@ you can restart your environment as follows:
    For example:
 
    ```
-   docker compose exec client conjur init -u https://proxy -a myConjurAccount --self-signed
+   docker compose exec client conjur init oss -u https://proxy -a myConjurAccount --self-signed
    ```
    **Verification**
    When you successfully reconnect the client to the Server, the terminal returns:
