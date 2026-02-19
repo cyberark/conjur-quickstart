@@ -278,7 +278,8 @@ In this unit, you will learn how to store your first secret.
 
    Generate a value for your application’s secret:
    ```
-   secretVal=$(openssl rand -hex 12 | tr -d '\r\n')
+   secretVal=$(openssl rand -hex 12 | tr -d '\r\n');
+   echo $secretVal
    ```
 
    This generates a 12-hex-character value.
@@ -357,7 +358,7 @@ service is spun up. It will be accessible on your local machine at `http://local
 To explore the database
 1. Visit `http://localhost:8081`
 2. Login with email "user@domain.com" and password "SuperSecret"
-3. Add a new server. Name it "Conjur DB". Set the connection details. Host is "database", Port is "5432", Database is "postgres", Username is "postgres", and there is no password. Note that `pgamdin` is running inside the `docker-compose` network, it is for this reason that the Host of "database" is resolvable.
+3. Add a new server. Name it "Conjur DB". Set the connection details. Host is "database", Port is "5432", Database is "postgres", Username is "postgres", and Password is "SuperSecretPg". Note that `pgamdin` is running inside the `docker-compose` network, it is for this reason that the Host of "database" is resolvable.
 4. Dig in as shown below!
 
 ![image](https://user-images.githubusercontent.com/8653164/115864622-03da7a00-a42f-11eb-974f-dc2cb034ca09.png)
